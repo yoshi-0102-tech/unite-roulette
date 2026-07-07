@@ -6,6 +6,11 @@ function pickRandom<T>(items: T[]): T {
   return items[index];
 }
 
+/** 技候補からランダムに1つ選ぶ。まだ未登録なら「（未設定）」を返す。 */
+function pickMove(moves: string[]): string {
+  return moves.length > 0 ? pickRandom(moves) : "（未設定）";
+}
+
 /** 抽選が失敗したときに理由を返すための型。 */
 export type DrawOutcome =
   | { ok: true; results: DrawResult[] }
@@ -49,8 +54,8 @@ export function drawTeam(pool: Pokemon[], slots: SlotConstraint[]): DrawOutcome 
 
     results.push({
       pokemon,
-      chosenMove1: pickRandom(pokemon.move1),
-      chosenMove2: pickRandom(pokemon.move2),
+      chosenMove1: pickMove(pokemon.move1),
+      chosenMove2: pickMove(pokemon.move2),
     });
   }
 
