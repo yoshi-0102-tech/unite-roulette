@@ -1,23 +1,35 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #ffffff;
+  color-scheme: dark;
 
-  font: 16px/1.5 system-ui, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN",
+  /* ===== デザイントークン（色や質感をここで一元管理） ===== */
+  --bg: #0a0e1c;
+  --text: #c8d2e8;
+  --text-dim: #7e89a8;
+  --text-h: #f4f7ff;
+
+  /* ガラス風パネル */
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-strong: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* アクセント */
+  --accent: #6c8cff;
+  --accent-2: #b06bff;
+  --hot-1: #ff5d5d;
+  --hot-2: #ffa53e;
+
+  /* ロールカラー */
+  --role-atk: #ff5d8f;
+  --role-def: #4c7dff;
+  --role-bal: #ff9f43;
+  --role-spd: #1fd6a3;
+  --role-sup: #c06bff;
+
+  font: 16px/1.6 system-ui, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN",
     "Noto Sans JP", sans-serif;
-  color-scheme: light dark;
   color: var(--text);
-  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #c7cdd9;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-  }
 }
 
 * {
@@ -27,6 +39,13 @@
 body {
   margin: 0;
   min-height: 100svh;
+  background-color: var(--bg);
+  /* 奥行きのある「ロビー画面」風の光 */
+  background-image:
+    radial-gradient(60rem 42rem at 85% -10%, rgba(126, 70, 255, 0.16), transparent 60%),
+    radial-gradient(52rem 36rem at -12% 18%, rgba(50, 120, 255, 0.14), transparent 60%),
+    radial-gradient(46rem 34rem at 55% 115%, rgba(255, 100, 140, 0.1), transparent 60%);
+  background-attachment: fixed;
 }
 
 h1,

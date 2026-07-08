@@ -11,3 +11,11 @@ import rawData from "./pokemon.json";
  * データ出典: ポケモンユナイト攻略Wiki（wikiwiki.jp/poke-unite）
  */
 export const SEED_POKEMON: Pokemon[] = rawData as Pokemon[];
+
+/**
+ * seed データのバージョン。pokemon.json を更新したら +1 する。
+ * ブラウザに保存された古いデータはこの番号が変わると破棄され、
+ * 新しい seed に自動で置き換わる（公開サイトの訪問者にも更新が届く）。
+ * ※ 利用者が編集画面で加えた変更もリセットされる点に注意（必要なら書き出しで退避）。
+ */
+export const DATA_VERSION = 2;

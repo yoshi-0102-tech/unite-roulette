@@ -1,4 +1,4 @@
-import { SEED_POKEMON } from "../data/pokemon";
+import { DATA_VERSION, SEED_POKEMON } from "../data/pokemon";
 import { ROLES, type Pokemon, type Role } from "../data/types";
 
 // ブラウザ保存（localStorage）で使うキー名。他アプリと被らないよう接頭辞をつける。
@@ -20,32 +20,49 @@ function sanitize(value: unknown): Pokemon[] | null {
     if (!ROLES.includes(p.role as Role)) return null;
     if (!Array.isArray(p.move1) || !Array.isArray(p.move2)) return null;
 
-    result.push({
+    const pokemon: Pokemon = {
       id: p.id,
       name: p.name,
       role: p.role as Role,
       move1: p.move1.map(String),
       move2: p.move2.map(String),
-    });
+    };
+    if (p.linkedMoves === true) pokemon.linkedMoves = true;
+    if (p.freeMoves === true) pokemon.freeMoves = true;
+    result.push(pokemon);
   }
   return result;
 }
 
-/** 保存済みデータを読み込む。無ければ／壊れていれば初期データを返す。 */
+/**
+ * 保存済みデータを読み込む。
+ * - 無い／壊れている → 初期データ（seed）
+ * - seed のバージョンが上がっていた → 古い保存データは捨てて新しい seed
+ */
 export function loadPokemon(): Pokemon[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return SEED_POKEMON;
-    const parsed = sanitize(JSON.parse(raw));
-    return parsed ?? SEED_POKEMON;
+    const parsed: unknown = JSON.parse(raw);
+
+    // 旧形式（ただの配列）はバージョン管理前のデータなので seed に置き換える
+    if (Array.isArray(parsed)) return SEED_POKEMON;
+
+    const obj = parsed as { version?: unknown; pokemon?: unknown };
+    if (obj.version !== DATA_VERSION) return SEED_POKEMON;
+
+    return sanitize(obj.pokemon) ?? SEED_POKEMON;
   } catch {
     return SEED_POKEMON;
   }
 }
 
-/** 現在のデータをブラウザに保存する。 */
+/** 現在のデータをバージョン番号付きでブラウザに保存する。 */
 export function savePokemon(list: Pokemon[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ version: DATA_VERSION, pokemon: list }),
+  );
 }
 
 /** データを JSON ファイルとしてダウンロードさせる（バックアップ・共有用）。 */

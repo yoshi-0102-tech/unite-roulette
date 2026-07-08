@@ -8,6 +8,25 @@ const CONSTRAINT_OPTIONS: { value: SlotConstraint; label: string }[] = [
   ...ROLES.map((r) => ({ value: r, label: r })),
 ];
 
+// プレイヤー名の保存キー。
+const PLAYERS_KEY = "unite-roulette:players";
+
+/** 保存済みのプレイヤー名（5人分）を読み込む。 */
+function loadNames(): string[] {
+  try {
+    const raw = localStorage.getItem(PLAYERS_KEY);
+    const parsed: unknown = raw ? JSON.parse(raw) : null;
+    if (Array.isArray(parsed)) {
+      const names = parsed.map(String).slice(0, 5);
+      while (names.length < 5) names.push("");
+      return names;
+    }
+  } catch {
+    // 壊れていたら初期値にフォールバック
+  }
+  return Array(5).fill("");
+}
+
 // 演出のタイミング（ミリ秒）。
 const ROLL_INTERVAL = 70; // 名前が切り替わる速さ
 const FIRST_LOCK = 700; // 1人目が確定するまで
@@ -18,6 +37,8 @@ export function Roulette({ pokemon }: { pokemon: Pokemon[] }) {
   const [slots, setSlots] = useState<SlotConstraint[]>(() =>
     Array(5).fill("any"),
   );
+  // プレイヤー名（常に5人分持ち、表示は人数分だけ）。
+  const [names, setNames] = useState<string[]>(loadNames);
   const [results, setResults] = useState<DrawResult[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   // 何人目まで「確定済み」か。演出中は少しずつ増えていく。
@@ -28,6 +49,11 @@ export function Roulette({ pokemon }: { pokemon: Pokemon[] }) {
   // タイマーを保持しておき、あとで確実に止められるようにする。
   const intervalRef = useRef<number | null>(null);
   const timeoutsRef = useRef<number[]>([]);
+
+  // プレイヤー名は変わるたびに保存する。
+  useEffect(() => {
+    localStorage.setItem(PLAYERS_KEY, JSON.stringify(names));
+  }, [names]);
 
   function clearTimers() {
     if (intervalRef.current !== null) {
@@ -52,6 +78,10 @@ export function Roulette({ pokemon }: { pokemon: Pokemon[] }) {
 
   function changeSlot(index: number, value: SlotConstraint) {
     setSlots((prev) => prev.map((s, i) => (i === index ? value : s)));
+  }
+
+  function changeName(index: number, value: string) {
+    setNames((prev) => prev.map((n, i) => (i === index ? value : n)));
   }
 
   function handleDraw() {
@@ -116,11 +146,17 @@ export function Roulette({ pokemon }: { pokemon: Pokemon[] }) {
         </div>
 
         <div className="field">
-          <span className="field__label">各プレイヤーのロール指定</span>
+          <span className="field__label">プレイヤー名とロール指定</span>
           <div className="slots">
             {slots.map((slot, i) => (
-              <label key={i} className="slots__item">
-                <span className="slots__num">{i + 1}人目</span>
+              <div key={i} className="slots__item">
+                <span className="slots__num">{i + 1}P</span>
+                <input
+                  className="slots__name"
+                  placeholder={`プレイヤー${i + 1}（任意）`}
+                  value={names[i]}
+                  onChange={(e) => changeName(i, e.target.value)}
+                />
                 <select
                   value={slot}
                   onChange={(e) =>
@@ -133,7 +169,7 @@ export function Roulette({ pokemon }: { pokemon: Pokemon[] }) {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
             ))}
           </div>
         </div>
@@ -149,16 +185,21 @@ export function Roulette({ pokemon }: { pokemon: Pokemon[] }) {
         <section className="results">
           {results.map((r, i) => {
             const locked = i < lockedCount; // このカードは確定済み？
+            const playerName = names[i]?.trim();
             return (
               <article
                 key={i}
                 className={
                   "result-card" +
-                  (locked ? " result-card--locked" : " result-card--rolling")
+                  (locked
+                    ? ` result-card--locked role-${r.pokemon.role}`
+                    : " result-card--rolling")
                 }
               >
                 <div className="result-card__head">
-                  <span className="result-card__num">{i + 1}人目</span>
+                  <span className="result-card__num">
+                    {i + 1}P{playerName ? ` — ${playerName}` : ""}
+                  </span>
                   {locked ? (
                     <span className={`badge badge--${r.pokemon.role}`}>
                       {r.pokemon.role}

@@ -41,11 +41,19 @@ npx tsc -b         # 型チェックのみ
 
 - **データの正はブラウザの localStorage**（キー: `unite-roulette:pokemon`）。
   `SEED_POKEMON` はあくまで初期値／リセット先。ユーザーの編集内容が優先される。
+- **`pokemon.json` を更新したら `pokemon.ts` の `DATA_VERSION` を必ず +1 する**。
+  保存データはバージョン付き（`{version, pokemon}`）で、番号が合わないと seed に自動置換される。
+  これを忘れると公開サイトの訪問者に更新が届かない。
 - localStorage が空 or 壊れている場合は `SEED_POKEMON` にフォールバック。
   読み込み時は `storage.ts` の `sanitize()` で検証してから使う（不正JSONで落ちない設計）。
+- Pokemon には省略可能フラグがある: `linkedMoves`（わざ1/2を同じ番号のペアで抽選、例: ウーラオス）、
+  `freeMoves`（技を抽選せず「自由（試合中変更可）」表示、例: バシャーモ・ミュウ）。
+  編集画面ではこのフラグは編集できない（JSON直編集のみ）。
+- `move1`/`move2` が1件だけの場合は技固定として扱われる（そのまま常に表示）。
 - **初期データの技名は最新アプデと差異があり得る**。正確性の担保はユーザーの編集画面に委ねている。
 - 抽選演出のタイマーは `Roulette.tsx` の `intervalRef` / `timeoutsRef` で管理。
   新規抽選・アンマウント時に `clearTimers()` で必ず止める（消し忘れると多重に走る）。
+- **公開先**: Vercel（https://unite-roulette.vercel.app）。`main` に push すると自動デプロイ。
 
 ## Git / コミット規約
 

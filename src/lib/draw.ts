@@ -11,6 +11,24 @@ function pickMove(moves: string[]): string {
   return moves.length > 0 ? pickRandom(moves) : "（未設定）";
 }
 
+/** 試合中に技変更できるポケモンの表示ラベル。 */
+export const FREE_MOVE_LABEL = "自由（試合中変更可）";
+
+/** ポケモンの特性（連動・自由）を考慮して技2つを決める。 */
+function pickMoves(p: Pokemon): { move1: string; move2: string } {
+  // 試合中変更可 → 抽選しない
+  if (p.freeMoves) {
+    return { move1: FREE_MOVE_LABEL, move2: FREE_MOVE_LABEL };
+  }
+  // 組み合わせ固定 → 同じ番号のペアを一緒に選ぶ
+  if (p.linkedMoves && p.move1.length > 0 && p.move1.length === p.move2.length) {
+    const index = Math.floor(Math.random() * p.move1.length);
+    return { move1: p.move1[index], move2: p.move2[index] };
+  }
+  // 通常 → それぞれ独立に抽選
+  return { move1: pickMove(p.move1), move2: pickMove(p.move2) };
+}
+
 /** 抽選が失敗したときに理由を返すための型。 */
 export type DrawOutcome =
   | { ok: true; results: DrawResult[] }
@@ -52,10 +70,11 @@ export function drawTeam(pool: Pokemon[], slots: SlotConstraint[]): DrawOutcome 
     const pokemon = pickRandom(candidates);
     usedIds.add(pokemon.id);
 
+    const moves = pickMoves(pokemon);
     results.push({
       pokemon,
-      chosenMove1: pickMove(pokemon.move1),
-      chosenMove2: pickMove(pokemon.move2),
+      chosenMove1: moves.move1,
+      chosenMove2: moves.move2,
     });
   }
 

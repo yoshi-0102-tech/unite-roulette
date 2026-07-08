@@ -1,55 +1,74 @@
 .app {
-  max-width: 720px;
+  max-width: 740px;
   margin: 0 auto;
-  padding: 24px 16px 64px;
+  padding: 40px 16px 72px;
   text-align: center;
 }
 
+/* ===== ヘッダー ===== */
 .app__header h1 {
-  font-size: 1.8rem;
-  margin: 0 0 8px;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin: 0 0 6px;
+  background: linear-gradient(100deg, #8fb0ff 0%, #d0a5ff 45%, #ff9cc0 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(140, 120, 255, 0.35));
 }
 
 .app__subtitle {
-  color: #8a93a6;
-  font-size: 0.9rem;
-  margin: 0 0 24px;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  margin: 0 0 28px;
 }
 
-/* ---- タブ ---- */
+/* ===== タブ ===== */
 .tabs {
   display: flex;
   gap: 8px;
   margin-bottom: 20px;
+  padding: 5px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
 }
 
 .tabs__btn {
   flex: 1;
-  padding: 12px 0;
+  padding: 11px 0;
   border-radius: 10px;
-  border: 1px solid rgba(127, 127, 127, 0.3);
+  border: none;
   background: transparent;
-  color: inherit;
-  font-size: 1rem;
-  font-weight: 600;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.18s;
+}
+
+.tabs__btn:hover {
+  color: var(--text-h);
 }
 
 .tabs__btn--active {
-  background: #6c8cff;
-  border-color: #6c8cff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: #fff;
+  box-shadow: 0 4px 18px rgba(108, 140, 255, 0.35);
 }
 
-/* ---- 操作パネル ---- */
+/* ===== 操作パネル（ガラス風） ===== */
 .panel {
-  background: rgba(127, 127, 127, 0.08);
-  border: 1px solid rgba(127, 127, 127, 0.18);
-  border-radius: 16px;
-  padding: 20px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 22px;
   margin-bottom: 28px;
   text-align: left;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
 }
 
 .field {
@@ -58,12 +77,15 @@
 
 .field__label {
   display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #8a93a6;
-  margin-bottom: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
 }
 
+/* 人数ボタン */
 .count-buttons {
   display: flex;
   gap: 8px;
@@ -71,27 +93,30 @@
 
 .count-buttons__btn {
   flex: 1;
-  padding: 10px 0;
-  border-radius: 10px;
-  border: 1px solid rgba(127, 127, 127, 0.3);
-  background: transparent;
-  color: inherit;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 11px 0;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s;
 }
 
 .count-buttons__btn:hover {
-  border-color: #6c8cff;
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
 .count-buttons__btn--active {
-  background: #6c8cff;
-  border-color: #6c8cff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: transparent;
   color: #fff;
+  box-shadow: 0 4px 18px rgba(108, 140, 255, 0.4);
 }
 
+/* プレイヤー行 */
 .slots {
   display: flex;
   flex-direction: column;
@@ -101,106 +126,149 @@
 .slots__item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 8px 12px;
 }
 
 .slots__num {
-  width: 64px;
-  font-size: 0.9rem;
-  color: #8a93a6;
+  flex: 0 0 34px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.slots__name {
+  flex: 1.2;
+  min-width: 0;
 }
 
 .slots__item select {
   flex: 1;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(127, 127, 127, 0.3);
-  background: transparent;
-  color: inherit;
-  font-size: 0.95rem;
+  min-width: 0;
 }
 
+.slots__item input,
+.slots__item select,
+.editor input,
+.editor select {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(10, 14, 28, 0.55);
+  color: var(--text-h);
+  font-size: 0.92rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.slots__item input:focus,
+.slots__item select:focus,
+.editor input:focus,
+.editor select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(108, 140, 255, 0.18);
+}
+
+.slots__item input::placeholder,
+.editor input::placeholder {
+  color: var(--text-dim);
+  opacity: 0.7;
+}
+
+/* ===== 抽選ボタン ===== */
 .draw-btn {
+  position: relative;
+  overflow: hidden;
   width: 100%;
-  padding: 16px;
+  padding: 17px;
   margin-top: 8px;
   border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ff6b6b, #ffa53e);
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--hot-1), var(--hot-2));
   color: #fff;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: transform 0.1s, filter 0.15s;
+  box-shadow: 0 8px 28px rgba(255, 110, 80, 0.35);
+  transition: transform 0.12s, filter 0.15s, box-shadow 0.15s;
+}
+
+/* ボタンを横切る光の演出 */
+.draw-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 3.2s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%, 60% {
+    left: -80%;
+  }
+  100% {
+    left: 130%;
+  }
 }
 
 .draw-btn:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 34px rgba(255, 110, 80, 0.45);
 }
 
 .draw-btn:active {
-  transform: scale(0.98);
+  transform: scale(0.985);
+}
+
+.draw-btn:disabled {
+  filter: grayscale(0.5) brightness(0.75);
+  cursor: default;
+  box-shadow: none;
+}
+
+.draw-btn:disabled::after {
+  animation: none;
 }
 
 .error {
-  color: #ff6b6b;
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  border-radius: 10px;
-  padding: 12px;
+  color: #ff8181;
+  background: rgba(255, 100, 100, 0.08);
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  border-radius: 12px;
+  padding: 13px;
   font-size: 0.9rem;
 }
 
-/* ---- 結果カード ---- */
+/* ===== 結果カード ===== */
 .results {
   display: grid;
   gap: 12px;
 }
 
 .result-card {
-  background: rgba(127, 127, 127, 0.08);
-  border: 1px solid rgba(127, 127, 127, 0.18);
-  border-radius: 14px;
-  padding: 16px;
+  position: relative;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px 18px;
   text-align: left;
+  backdrop-filter: blur(12px);
   animation: pop 0.25s ease;
   transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-/* パラパラ抽選中のカード：名前が高速で入れ替わる見た目。 */
-.result-card--rolling {
-  border-color: rgba(108, 140, 255, 0.5);
-}
-
-.result-card--rolling .result-card__name {
-  color: #8a93a6;
-  filter: blur(0.4px);
-}
-
-/* 確定した瞬間の「パチン」演出。 */
-.result-card--locked {
-  animation: lockIn 0.35s ease;
-}
-
-@keyframes lockIn {
-  0% {
-    transform: scale(1.06);
-    border-color: #ffd43b;
-    box-shadow: 0 0 0 3px rgba(255, 212, 59, 0.4);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 212, 59, 0);
-  }
-}
-
-.badge--rolling {
-  background: #8a93a6;
-}
-
-.draw-btn:disabled {
-  filter: grayscale(0.4) brightness(0.9);
-  cursor: default;
 }
 
 @keyframes pop {
@@ -214,6 +282,64 @@
   }
 }
 
+/* パラパラ抽選中：脈打つ枠 */
+.result-card--rolling {
+  border-color: rgba(108, 140, 255, 0.45);
+  animation: pop 0.25s ease, pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(108, 140, 255, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 22px 2px rgba(108, 140, 255, 0.28);
+  }
+}
+
+.result-card--rolling .result-card__name {
+  color: var(--text-dim);
+  filter: blur(0.4px);
+}
+
+/* 確定した瞬間の「パチン」 */
+.result-card--locked {
+  animation: lockIn 0.4s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+@keyframes lockIn {
+  0% {
+    transform: scale(1.05);
+    border-color: #ffd43b;
+    box-shadow: 0 0 0 4px rgba(255, 212, 59, 0.45), 0 0 40px rgba(255, 212, 59, 0.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ロールカラーの縁取り＋発光（確定後） */
+.result-card.role-アタック {
+  border-left: 4px solid var(--role-atk);
+  box-shadow: -6px 0 24px -8px var(--role-atk);
+}
+.result-card.role-ディフェンス {
+  border-left: 4px solid var(--role-def);
+  box-shadow: -6px 0 24px -8px var(--role-def);
+}
+.result-card.role-バランス {
+  border-left: 4px solid var(--role-bal);
+  box-shadow: -6px 0 24px -8px var(--role-bal);
+}
+.result-card.role-スピード {
+  border-left: 4px solid var(--role-spd);
+  box-shadow: -6px 0 24px -8px var(--role-spd);
+}
+.result-card.role-サポート {
+  border-left: 4px solid var(--role-sup);
+  box-shadow: -6px 0 24px -8px var(--role-sup);
+}
+
 .result-card__head {
   display: flex;
   align-items: center;
@@ -222,65 +348,77 @@
 }
 
 .result-card__num {
-  font-size: 0.8rem;
-  color: #8a93a6;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-dim);
 }
 
 .result-card__name {
   font-size: 1.5rem;
+  font-weight: 800;
   margin: 4px 0 12px;
 }
 
 .result-card__moves {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin: 0;
 }
 
 .result-card__moves > div {
   flex: 1;
-  background: rgba(127, 127, 127, 0.1);
-  border-radius: 8px;
-  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 9px 13px;
 }
 
 .result-card__moves dt {
-  font-size: 0.7rem;
-  color: #8a93a6;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
   margin-bottom: 2px;
 }
 
 .result-card__moves dd {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--text-h);
 }
 
-/* ---- ロールごとの色バッジ ---- */
+/* ===== ロールバッジ ===== */
 .badge {
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 12px;
   border-radius: 999px;
   color: #fff;
+  letter-spacing: 0.04em;
 }
 
 .badge--アタック {
-  background: #e64980;
+  background: linear-gradient(135deg, #ff5d8f, #ff8f5d);
 }
 .badge--ディフェンス {
-  background: #4c6ef5;
+  background: linear-gradient(135deg, #4c7dff, #4cc3ff);
 }
 .badge--バランス {
-  background: #f76707;
+  background: linear-gradient(135deg, #ff9f43, #ffce43);
+  color: #4a2b00;
 }
 .badge--スピード {
-  background: #12b886;
+  background: linear-gradient(135deg, #1fd6a3, #1fb5d6);
 }
 .badge--サポート {
-  background: #ae3ec9;
+  background: linear-gradient(135deg, #c06bff, #ff6bd5);
+}
+.badge--rolling {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-dim);
 }
 
-/* ---- 編集画面 ---- */
+/* ===== 編集画面 ===== */
 .editor {
   text-align: left;
 }
@@ -289,35 +427,39 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .editor__toolbar button {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(127, 127, 127, 0.3);
-  background: transparent;
-  color: inherit;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
   font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: all 0.15s;
 }
 
 .editor__toolbar button:hover {
-  border-color: #6c8cff;
+  border-color: var(--accent);
+  color: var(--text-h);
 }
 
 .editor__danger:hover {
   border-color: #ff6b6b !important;
-  color: #ff6b6b;
+  color: #ff8181 !important;
 }
 
 .editor__message {
-  background: rgba(108, 140, 255, 0.12);
+  background: rgba(108, 140, 255, 0.1);
   border: 1px solid rgba(108, 140, 255, 0.3);
-  border-radius: 8px;
-  padding: 10px 12px;
+  border-radius: 10px;
+  padding: 11px 14px;
   font-size: 0.85rem;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
 }
 
 .editor__add {
@@ -339,28 +481,30 @@
 .editor input,
 .editor select {
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(127, 127, 127, 0.3);
-  background: transparent;
-  color: inherit;
-  font-size: 0.9rem;
 }
 
 .editor__add-btn {
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 8px;
-  background: #6c8cff;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
+  box-shadow: 0 4px 18px rgba(108, 140, 255, 0.3);
+  transition: filter 0.15s, transform 0.12s;
+}
+
+.editor__add-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
 .editor__count {
   font-size: 0.8rem;
-  color: #8a93a6;
-  margin: 0 0 8px;
+  color: var(--text-dim);
+  margin: 0 0 10px;
 }
 
 .editor__list {
@@ -369,12 +513,13 @@
 }
 
 .editor__item {
-  background: rgba(127, 127, 127, 0.08);
-  border: 1px solid rgba(127, 127, 127, 0.18);
-  border-radius: 12px;
-  padding: 12px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 13px;
   display: grid;
   gap: 8px;
+  backdrop-filter: blur(12px);
 }
 
 .editor__item-head {
@@ -385,7 +530,7 @@
 
 .editor__name {
   flex: 2;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .editor__item-head select {
@@ -394,15 +539,36 @@
 
 .editor__delete {
   flex: 0 0 auto;
-  width: 40px;
-  padding: 8px 0 !important;
-  border: 1px solid rgba(255, 107, 107, 0.4) !important;
-  border-radius: 8px;
+  width: 42px;
+  padding: 9px 0 !important;
+  border: 1px solid rgba(255, 107, 107, 0.35) !important;
+  border-radius: 10px;
   background: transparent;
   cursor: pointer;
   font-size: 1rem;
+  transition: background 0.15s;
 }
 
 .editor__delete:hover {
   background: rgba(255, 107, 107, 0.12);
+}
+
+/* ===== スマホ対応 ===== */
+@media (max-width: 520px) {
+  .app__header h1 {
+    font-size: 1.5rem;
+  }
+
+  .slots__item {
+    flex-wrap: wrap;
+  }
+
+  .slots__name {
+    flex: 1 1 100%;
+    order: 3;
+  }
+
+  .result-card__moves {
+    flex-direction: column;
+  }
 }
